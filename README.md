@@ -48,3 +48,5 @@ A URL base da aplicação é `http://localhost:8080`.
 ## 🛠️ Como Testar
 
 Recomenda-se o uso de um cliente de API como o **Postman** ou **Insomnia** para testar os endpoints `POST`, `PUT` e `DELETE`.
+
+![Demonstração da API no Postman](api-demonstração.png)
