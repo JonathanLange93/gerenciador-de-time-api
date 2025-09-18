@@ -49,4 +49,4 @@ A URL base da aplicação é `http://localhost:8080`.
 
 Recomenda-se o uso de um cliente de API como o **Postman** ou **Insomnia** para testar os endpoints `POST`, `PUT` e `DELETE`.
 
-![Demonstração da API no Postman](api-demonstração.png)
+![Demonstração da API no Postman](https://github.com/JonathanLange93/gerenciador-de-time-api/blob/main/api-demonstracao.png)
