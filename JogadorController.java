@@ -1,19 +1,17 @@
 package br.com.jonathan.gerenciador_de_time;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class JogadorController {
 
-    private ArrayList<Jogador> time = new ArrayList<>();
-
-    public JogadorController(){
-        time.add(new Jogador("Ana", 25, 100));
-        time.add(new JogadorVIP ("Carlos", 28, 200, 1.5));
-
-    }
+    @Autowired
+    private JogadorRepository jogadorRepository;
 
     @GetMapping ("/ola")
     public String dizerOla(){
@@ -22,38 +20,40 @@ public class JogadorController {
     }
 
     @GetMapping ("/time")
-    public ArrayList<Jogador>getTime(){
-        return time;
+    public List<Jogador> getTime(){
+        return jogadorRepository.findAll();
 
     }
     @PostMapping ("/time")
     public Jogador adicionarJogador (@RequestBody Jogador novoJogador){
-        time.add(novoJogador);
+        jogadorRepository.save(novoJogador);
         System.out.println("Novo jogador adiconado: " + novoJogador.getNome());
         return novoJogador;
     }
 
-    @DeleteMapping ("/time/{indice}")
-    public String deleteJogador(@PathVariable int indice){
-        if (indice >= 0 && indice < time.size()){
-            Jogador jogadorRemovido = time.remove(indice);
+    @DeleteMapping ("/time/{id}")
+    public String deleteJogador(@PathVariable Long id){
+        if (jogadorRepository.existsById(id)){
 
-            return "O jogador " + jogadorRemovido.getNome() + " foi removido com sucesso!";
+            jogadorRepository.deleteById(id);
+            return "Jogador com ID " + id + "foi removido!";
         } else {
-            return "ERRO: Índice inválido, nenhum jogador encontrado nessa posição " + indice + ".";
+            return "ERRO: Jogador com ID " + id + "não encontrado!";
         }
     }
 
-    @PutMapping ("/time/{indice}")
-    public Jogador updateJogador(@PathVariable int indice, @RequestBody Jogador dadosAtualizados){
-        if (indice >= 0 && indice < time.size()) {
-            Jogador jogadorParaAtualizar = time.get(indice);
+    @PutMapping ("/time/{id}")
+    public Jogador updateJogador(@PathVariable Long id, @RequestBody Jogador dadosAtualizados){
+        Optional<Jogador> jogadorOptional = jogadorRepository.findById(id);
+
+        if (jogadorOptional.isPresent()){
+            Jogador jogadorParaAtualizar = jogadorOptional.get();
 
             jogadorParaAtualizar.setNome(dadosAtualizados.getNome());
             jogadorParaAtualizar.setIdade(dadosAtualizados.getIdade());
             jogadorParaAtualizar.setPontuacao(dadosAtualizados.getPontuacao());
 
-            return jogadorParaAtualizar;
+            return jogadorRepository.save(jogadorParaAtualizar);
 
         } else {
 

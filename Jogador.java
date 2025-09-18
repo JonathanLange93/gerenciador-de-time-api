@@ -1,52 +1,41 @@
 package br.com.jonathan.gerenciador_de_time;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 import java.util.Scanner;
 
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Jogador {
 
-    Scanner scan = new Scanner(System.in);
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
 
     private String nome;
     private int idade;
     private int pontuacao;
 
-    public String getNome() {
-        return nome;
-    }
-
-    public int getIdade(){
-        return idade;
-    }
-
-    public int getPontuacao(){
-        return pontuacao;
-    }
-
-    public void setNome(String nome){
-        this.nome = nome;
-    }
 
     public void setIdade(int idade) {
-        if (idade < 0){
-            System.out.println("Idade inválida, digite uma idade maior que ZERO!");
-        } else {
+        if (idade > 0){
             this.idade = idade;
         }
     }
 
-    public void setPontuacao(int pontuacao){
-        this.pontuacao = pontuacao;
-    }
-
-    public Jogador(String nome, int idade, int pontuacao){
-        this.nome = nome;
-        this.idade = idade;
-        this.pontuacao = pontuacao;
-    }
 
     public void aumentarPontuacao(int pontosGanhos){
         pontuacao += pontosGanhos;
     }
-
 
 }
